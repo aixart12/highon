@@ -3,12 +3,25 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/geolocation": "*",
+    "@react-native-material/core": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
+    "metro-config": "*",
     "react": "*",
     "react-native": "*",
+    "react-native-camera": "*",
     "react-native-config": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-google-places-autocomplete": "*",
+    "react-native-maps": "*",
+    "react-native-qrcode-scanner": "*",
+    "react-native-qrcode-svg": "*",
+    "react-native-responsive-fontsize": "*",
+    "react-native-responsive-screen": "*",
+    "react-native-super-grid": "*",
     "react-native-svg": "*",
-    "@react-native-async-storage/async-storage": "*"
+    "vision-camera-code-scanner": "*"
   }
 }

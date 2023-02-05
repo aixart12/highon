@@ -7,6 +7,7 @@ import { RootStackParamList } from '../interface/types';
 import { DiscoveryLocation } from '../pages/map/discoveLocation';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserProfile } from '../pages/profile/profile';
+import { AdminProfile } from '../pages/admin/profile';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +25,7 @@ export const App = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Map" component={DiscoveryLocation} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="AdminProfile" component={AdminProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>

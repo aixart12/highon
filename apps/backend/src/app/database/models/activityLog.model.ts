@@ -34,9 +34,6 @@ export class ActivityLogSchema extends Model<ActivityLog> {
   @Column
   location: string;
 
-  @Column
-  isSuperAdmin: boolean;
-
   @Default(Sequelize.literal(POSTGRES_CURRENT_TIMESTAMP))
   @Column({ type: DataType.DATE })
   createdAt: string;

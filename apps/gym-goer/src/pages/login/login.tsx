@@ -5,14 +5,13 @@ import {
   HStack,
   TextInput,
 } from '@react-native-material/core';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FC } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useMutation } from 'react-query';
 import { loginUser } from '../../apis/user.apis';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../interface/types';
-import { FC } from 'react';
 
 type LoginInput = {
   name: string;
@@ -36,11 +35,15 @@ export const LoginScreen: FC<LoginScreenProps> = (navigation) => {
     formState: { errors },
   } = useForm();
   const createUserMutation = useMutation((data: any) => loginUser(data));
+
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
-    console.log(data);
     createUserMutation.mutate(data, {
-      onSuccess: (data) => {
-        navigation.navigation.push('Map');
+      onSuccess: (userData) => {
+        if (userData.isAdmin) {
+          navigation.navigation.push('AdminProfile');
+        } else {
+          navigation.navigation.push('Map', (data = userData));
+        }
       },
       onError: (e) => console.log(e),
     });
@@ -65,7 +68,7 @@ export const LoginScreen: FC<LoginScreenProps> = (navigation) => {
                 value={value}
               />
             )}
-            name="username"
+            name="uuid"
           />
           <Controller
             control={control}

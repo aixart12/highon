@@ -23,7 +23,7 @@ export class UserController {
     return this.userService.create(user);
   }
 
-  @Post('/update-location')
+  @Post('/update-location/:userId')
   updateLocation(
     @Param('userId', ParseIntPipe) userId: number,
     @Body() user: UsersDto

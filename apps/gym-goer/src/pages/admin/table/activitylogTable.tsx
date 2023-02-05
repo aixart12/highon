@@ -24,6 +24,7 @@ export const ActivityLogTable = () => {
       data={allLogs}
       style={styles.gridView}
       // staticDimension={300}
+      // fixed
       spacing={0}
       renderItem={({ item }) => (
         <View style={[styles.itemContainer, { backgroundColor: '#631f70' }]}>

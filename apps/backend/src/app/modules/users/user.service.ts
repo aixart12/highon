@@ -77,4 +77,19 @@ export class UserService {
       }
     );
   }
+  findByUUID(uuid: string, transaction?: Transaction) {
+    return this.userModelService.sequelize.transaction(
+      { transaction },
+      async (transaction) => {
+        const user = await this.userModelService.getOneWhere(
+          { uuid: uuid },
+          transaction
+        );
+        if (!user) {
+          throw new BadRequestException('User does not Exist');
+        }
+        return user;
+      }
+    );
+  }
 }

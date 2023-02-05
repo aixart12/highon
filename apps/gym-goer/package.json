@@ -22,6 +22,8 @@
     "react-native-google-places-autocomplete": "*",
     "react-native-maps": "*",
     "react-native-responsive-screen": "*",
-    "react-query": "*"
+    "react-query": "*",
+    "react-native-qrcode-svg": "*",
+    "react-native-super-grid": "*"
   }
 }

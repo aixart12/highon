@@ -1,6 +1,6 @@
 import Geolocation from '@react-native-community/geolocation';
 import { Button } from '@react-native-material/core';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   PermissionsAndroid,
   Platform,
@@ -15,8 +15,27 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { Constants } from '../../constants';
+import { useMutation } from 'react-query';
+import { updateLocation } from '../../apis/user.apis';
 
-export const DiscoveryLocation = () => {
+import { useRoute } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../interface/types';
+import { User } from '../../interface/user';
+
+type DiscoveryLocationScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Registration'
+>;
+
+export const DiscoveryLocation: FC<DiscoveryLocationScreenProps> = (
+  navigation
+) => {
+  const route = useRoute();
+
+  const userValue: User = { ...route.params };
+  console.log('🚀 ~ file: discoveLocation.tsx:35 ~ userValue', userValue.id);
+
   const [position, setPosition] = useState({
     latitude: 10,
     longitude: 10,
@@ -26,13 +45,6 @@ export const DiscoveryLocation = () => {
 
   useEffect(() => {
     async function requestPermissions() {
-      // if (Platform.OS === 'ios') {
-      //   const auth = await Geolocation.requestAuthorization("whenInUse");
-      //   if(auth === "granted") {
-      //      // do something if granted...
-      //   }
-      // }
-
       if (Platform.OS === 'android') {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
@@ -57,25 +69,26 @@ export const DiscoveryLocation = () => {
   const searchHandler = (data) => {
     setPosition(data);
   };
+  const createUpdateLocationMutation = useMutation((e: any) =>
+    updateLocation(e.userId, e.data)
+  );
 
-  const onPressHandler = (data) => {
-    console.log(
-      '🚀 ~ file: discoveLocation.tsx:26 ~ DiscoveryLocation ~ position',
-      position
+  const onPressHandler = (e) => {
+    createUpdateLocationMutation.mutate(
+      {
+        userId: userValue.id,
+        data: { ...userValue, location: JSON.stringify(position.latitude) },
+      },
+      {
+        onSuccess: (userData) => {
+          navigation.navigation.push('UserProfile', userData);
+        },
+        onError: (e) => console.log(e),
+      }
     );
   };
   return (
     <View style={styles.container}>
-      {/* <View style={styles.vwheader} >
-                        <TouchableOpacity
-                            onPress={() => { this.props.navigation.goBack() }}
-                        >
-                            <Image source={require('../../Images/left-arrow-red.png')} style={{ height: 25, width: 30, marginTop: 22, marginLeft: 15, }}
-                            />
-                        </TouchableOpacity>
-                        <Text style={styles.txtdisloc}>Discovery Location </Text>
-                    </View> */}
-
       <View style={styles.container}>
         <MapView
           provider={PROVIDER_GOOGLE}
@@ -96,7 +109,7 @@ export const DiscoveryLocation = () => {
             coordinate={position}
           />
         </MapView>
-        <View style={{ marginTop: hp('12%') }}>
+        <View>
           <GooglePlacesAutocomplete
             placeholder="Enter City, State, Country"
             minLength={2} // minimum length of text to search
@@ -120,7 +133,7 @@ export const DiscoveryLocation = () => {
               textInput: {
                 marginLeft: 0,
                 marginRight: 0,
-                backgroundColor: '#D3D3D3',
+                backgroundColor: 'white',
               },
               description: {
                 fontWeight: 'bold',
@@ -139,9 +152,14 @@ export const DiscoveryLocation = () => {
         </View>
       </View>
 
-      <View style={{ marginTop: 10, marginBottom: 10 }}>
+      <View style={styles.buttonBox}>
         <TouchableOpacity>
-          <Button title="Confirm Location" onPress={onPressHandler}></Button>
+          <Button
+            style={styles.button}
+            title="Confirm Location"
+            onPress={onPressHandler}
+            tintColor="#631fa4"
+          ></Button>
         </TouchableOpacity>
       </View>
     </View>
@@ -154,20 +172,35 @@ const styles = StyleSheet.create({
   // },
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: '100%',
-    width: 400,
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     alignItems: 'center',
     borderRadius: 5,
-    padding: 4,
+    padding: 20,
+    backgroundColor: '#631fa4',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    marginTop: '30%',
+    height: '80%',
+    backgroundColor: 'red',
+    alignItems: 'center',
+    margin: 20,
+    borderRadius: 20,
   },
   search: {
-    marginTop: '20%',
+    width: '80%',
+    backgroundColor: 'red',
   },
-  wrapper: {
-    flex: 1,
+  searchBox: {
+    marginTop: '20%',
+    width: '100%',
+  },
+  button: {
+    marginHorizontal: 5,
+    backgroundColor: 'white',
+  },
+  buttonBox: {
+    position: 'absolute',
+    bottom: 20,
   },
 });

@@ -14,4 +14,9 @@ export class ActivityLogController {
   create(@Body() logData: LogsDto) {
     return this.activityLogService.create(logData);
   }
+
+  @Post('/add-log')
+  addLog(@Body() data: { uuid: string }) {
+    return this.activityLogService.createUsingUUID(data.uuid);
+  }
 }

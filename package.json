@@ -34,6 +34,7 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-share": "^8.1.0",
     "react-native-super-grid": "^5.0.0",
+    "react-native-table-component": "^1.2.2",
     "react-query": "^3.39.3",
     "reflect-metadata": "^0.1.13",
     "rn-fetch-blob": "^0.12.0",

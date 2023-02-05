@@ -8,13 +8,14 @@ import {
   TextInput,
 } from '@react-native-material/core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RootStackParamList } from '../../interface/types';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { createUser } from '../../apis/user.apis';
 import { useMutation } from 'react-query';
+import { UserContext } from '../../constants/userContext';
 
 type RegistrationInput = {
   name: string;
@@ -42,8 +43,8 @@ export const Registration: FC<RegistrationScreenProps> = (navigation) => {
   const onSubmit: SubmitHandler<RegistrationInput> = (data) => {
     console.log(data);
     createUserMutation.mutate(data, {
-      onSuccess: (data) => {
-        navigation.navigation.push('Map');
+      onSuccess: (userData) => {
+        navigation.navigation.push('Map', (data = userData));
       },
       onError: (e) => console.log(e),
     });

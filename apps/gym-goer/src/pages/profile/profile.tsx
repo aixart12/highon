@@ -3,12 +3,19 @@ import React from 'react';
 import { SafeAreaView, View, TextInput, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { ActivityLogTable } from './table/activitylogTable';
+import { useRoute } from '@react-navigation/native';
+import { User } from '../../interface/user';
 
 export const UserProfile = () => {
   const [QRvalue, setQRValue] = React.useState('');
-  const [QRLogo, setQRLogo] = React.useState('');
   const [QRImage, setQRImage] = React.useState('');
+
   // const ref = React.useRef();
+
+  const route = useRoute();
+
+  const userValue: User = route.params;
+  setQRValue(userValue.uuid);
   return (
     <SafeAreaView>
       <View style={styles.sectionContainer}>
@@ -27,7 +34,7 @@ export const UserProfile = () => {
         <View style={styles.code}>
           <Text style={styles.codeText}>User Code</Text>
           <Box>
-            <Text style={styles.codeBox}>0000</Text>
+            <Text style={styles.codeBox}>{QRvalue}</Text>
           </Box>
         </View>
       </View>

@@ -15,6 +15,14 @@ export const loginUser = async (data: any) => {
   return res?.data;
 };
 
+export const updateLocation = async (userId, data: any) => {
+  const res = await axiosInstance.post(
+    `/users/update-location/${userId}`,
+    data
+  );
+  return res?.data;
+};
+
 export const logoutUser = async () => {
   const res = await axiosInstance.put('auth/logout');
   return res?.data;
